@@ -16,8 +16,6 @@ void setup() {
   mp3.begin(9600);
   delay(500);
   loadConfiguration(filename, config);
-
-
   sendCommand(CMD_SEL_DEV, 0, DEV_TF);
   delay(100);
   if (mp3.available())

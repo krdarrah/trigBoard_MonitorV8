@@ -41,11 +41,11 @@ void initMonitorUDP() {
           Serial.println(decodeMP3Answer());
           mp3.flush();
         }
-        delay(500);
+        delay(100);
         unsigned long mp3StartTime = millis();
         while (millis() - mp3StartTime < 5000) {
           sendCommand(CMD_QUERY_STATUS);
-          delay(100);
+          delay(50);
           if (mp3.available())
           {
             //decodeMP3Answer();
@@ -57,6 +57,7 @@ void initMonitorUDP() {
             }
           }
         }
+        //udp.flush();
         delay(100);
         digitalWrite(speakerPwrPin, HIGH);
       } else {
