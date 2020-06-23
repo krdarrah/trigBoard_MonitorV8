@@ -6,7 +6,7 @@
 
 #include "monitorincludes.h"//special stuff needed just for this setup, mp3 player and pins
 #include "includes.h"
-const char fwVersion[] = "6/18/20 MONITOR";
+const char fwVersion[] = "6/22/20 MONITOR";
 
 void setup() {
   pinMode(LEDpin, OUTPUT);

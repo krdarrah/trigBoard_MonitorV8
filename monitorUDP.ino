@@ -45,7 +45,7 @@ void initMonitorUDP() {
         unsigned long mp3StartTime = millis();
         while (millis() - mp3StartTime < 5000) {
           sendCommand(CMD_QUERY_STATUS);
-          delay(50);
+          delay(20);
           if (mp3.available())
           {
             //decodeMP3Answer();
