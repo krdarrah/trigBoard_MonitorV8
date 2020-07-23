@@ -6,7 +6,7 @@
 
 #include "monitorincludes.h"//special stuff needed just for this setup, mp3 player and pins
 #include "includes.h"
-const char fwVersion[] = "6/22/20 MONITOR";
+const char fwVersion[] = "7/23/20 MONITOR";
 
 void setup() {
   pinMode(LEDpin, OUTPUT);
@@ -17,7 +17,11 @@ void setup() {
   delay(500);
   loadConfiguration(filename, config);
   sendCommand(CMD_SEL_DEV, 0, DEV_TF);
-  delay(100);
+  delay(200);
+
+  sendCommand(CMD_SET_VOLUME, 0, 22);
+  delay(200);
+
   if (mp3.available())
   {
     Serial.println(decodeMP3Answer());
@@ -39,22 +43,28 @@ void loop() {
   } else {
     btStop();
     digitalWrite(LEDpin, LOW);
-    if (WiFi.status() != WL_CONNECTED)
+    if (WiFi.status() != WL_CONNECTED) {
+      Serial.println("WiFi Disconnected on its own");
+      delay(100);
       ESP.restart();
-  }
-
-
-
-
-  if (strcmp(newPacket, oldPacketReceived) == 0) {//we received new packet, so will start a timer before resetting
-    if (firstPacket) {
-      startTimeForReset = millis();
-      firstPacket = false;
-    }
-    if (millis() - startTimeForReset > resetTime) {
-      firstPacket = true;
-      startTimeForReset = millis();
-      strcpy(oldPacketReceived, "");
     }
   }
+
+  if (firstPacket) {//this fires everytime a new packet is received - which is noramlly a blast of 10-20 just to make sure something gets here
+    Serial.print(millis() - firstPacketTime);
+    Serial.println("ms");
+    firstPacket = false;
+    firstPacketTime = millis();
+    trackWillBePlayed = true;
+  }
+  else if (trackWillBePlayed && ((millis()-firstPacketTime) > 100)) {//now 100ms after all packets are received, play the track. This keeps things from double playing
+    Serial.print(millis() - firstPacketTime);
+    Serial.println("ms");
+    trackWillBePlayed = false;
+    Serial.print(receivedPackets);
+    Serial.println(" packets");
+    receivedPackets = 0;
+    playTheTrack();
+  }
+
 }

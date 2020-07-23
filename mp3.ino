@@ -1,6 +1,54 @@
 // from here https://github.com/salvadorrueda/ArduinoSerialMP3Player/blob/master/ArduinoSerialMP3Player/ArduinoSerialMP3Player.ino
 
 
+void playTheTrack() {
+  Serial.print("Playing Track:");
+  int trackToPlay = atoi(newPacket);
+  Serial.println(trackToPlay);
+  //here's where we can play the track
+  donePlaying = false;
+  sendCommand(CMD_QUERY_VOLUME);
+  delay(100);
+  if (mp3.available())
+  {
+    Serial.println(decodeMP3Answer());
+    mp3.flush();
+  }
+
+
+  Serial.print("Turning Speaker ON");
+  digitalWrite(speakerPwrPin, LOW);
+  sendCommand(CMD_PLAY_FOLDER_FILE, 1 , trackToPlay);
+
+
+  delay(100);
+  if (mp3.available())
+  {
+    Serial.println(decodeMP3Answer());
+    mp3.flush();
+  }
+  delay(500);
+  unsigned long mp3StartTime = millis();
+  while (millis() - mp3StartTime < 5000) {
+    sendCommand(CMD_QUERY_STATUS);
+    delay(20);
+    if (mp3.available())
+    {
+      //decodeMP3Answer();
+      Serial.println(decodeMP3Answer());
+      mp3.flush();
+      if (donePlaying) {
+        Serial.println("Done playing");
+        break;
+      }
+    }
+  }
+  //udp.flush();
+  delay(100);
+  digitalWrite(speakerPwrPin, HIGH);
+}
+
+
 
 
 /********************************************************************************/

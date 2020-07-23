@@ -15,17 +15,18 @@ SoftwareSerial mp3(ARDUINO_RX_PIN, ARDUINO_TX_PIN);
 bool donePlaying = false;//so we know when done playing, then kill power to the speaker
 
 //I forgot where this code came from, but from somewhere where you buy these mp3 players
-unsigned long startTimeForReset;
+unsigned long firstPacketTime;
 char oldPacketReceived[200];
 char newPacket[200];
 int receivedPackets = 0;
-boolean firstPacket = true;
-const int resetTime = 3000;//time(ms) used to reset the packet in case the same door sends the same message
+bool trackWillBePlayed = false;
+boolean firstPacket = false;
 static int8_t Send_buf[8] = {0}; // Buffer for Send commands.  // BETTER LOCALLY
 static uint8_t ansbuf[10] = {0}; // Buffer for the answers.    // BETTER LOCALLY
 String mp3Answer;           // Answer from the MP3.
 String sanswer(void);
 String sbyte2hex(uint8_t b);
+void playTheTrack();
 
 /************ Command byte **************************/
 #define CMD_NEXT_SONG     0X01  // Play next song.
