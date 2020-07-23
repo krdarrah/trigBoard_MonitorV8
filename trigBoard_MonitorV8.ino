@@ -57,7 +57,7 @@ void loop() {
     firstPacketTime = millis();
     trackWillBePlayed = true;
   }
-  else if (trackWillBePlayed && ((millis()-firstPacketTime) > 100)) {//now 100ms after all packets are received, play the track. This keeps things from double playing
+  else if (trackWillBePlayed && ((millis()-firstPacketTime) > 500)) {//now after all packets are received, play the track. This keeps things from double playing
     Serial.print(millis() - firstPacketTime);
     Serial.println("ms");
     trackWillBePlayed = false;

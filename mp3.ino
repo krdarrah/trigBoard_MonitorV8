@@ -7,7 +7,7 @@ void playTheTrack() {
   Serial.println(trackToPlay);
   //here's where we can play the track
   donePlaying = false;
-  sendCommand(CMD_QUERY_VOLUME);
+  //sendCommand(CMD_QUERY_VOLUME);
   delay(100);
   if (mp3.available())
   {
@@ -31,7 +31,7 @@ void playTheTrack() {
   unsigned long mp3StartTime = millis();
   while (millis() - mp3StartTime < 5000) {
     sendCommand(CMD_QUERY_STATUS);
-    delay(20);
+    delay(50);
     if (mp3.available())
     {
       //decodeMP3Answer();
