@@ -2,6 +2,13 @@
 
 
 void playTheTrack() {
+  sendCommand(CMD_SET_VOLUME, 0, 23);
+  delay(100);
+  if (mp3.available())
+  {
+    Serial.println(decodeMP3Answer());
+    mp3.flush();
+  }
   Serial.print("Playing Track:");
   int trackToPlay = atoi(newPacket);
   Serial.println(trackToPlay);
@@ -82,8 +89,8 @@ String decodeMP3Answer() {
     case 0x42:
       decodedMP3Answer += " -> Status playing: " + String(ansbuf[6], DEC);
       Serial.println(ansbuf[6]);
-      if (ansbuf[6] == 0)
-        donePlaying = true;
+      //      if (ansbuf[6] == 0)
+      //        donePlaying = true;
       break;
 
     case 0x48:

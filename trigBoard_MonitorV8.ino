@@ -18,10 +18,6 @@ void setup() {
   loadConfiguration(filename, config);
   sendCommand(CMD_SEL_DEV, 0, DEV_TF);
   delay(200);
-
-  sendCommand(CMD_SET_VOLUME, 0, 22);
-  delay(200);
-
   if (mp3.available())
   {
     Serial.println(decodeMP3Answer());
@@ -57,7 +53,7 @@ void loop() {
     firstPacketTime = millis();
     trackWillBePlayed = true;
   }
-  else if (trackWillBePlayed && ((millis()-firstPacketTime) > 500)) {//now after all packets are received, play the track. This keeps things from double playing
+  else if (trackWillBePlayed && ((millis() - firstPacketTime) > 500)) { //now after all packets are received, play the track. This keeps things from double playing
     Serial.print(millis() - firstPacketTime);
     Serial.println("ms");
     trackWillBePlayed = false;
